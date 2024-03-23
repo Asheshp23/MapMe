@@ -11,6 +11,9 @@
 		0F01F0AD2BAA8B82003D53B1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F01F0AC2BAA8B82003D53B1 /* ContentView.swift */; };
 		0F01F0AF2BAA8B83003D53B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0F01F0AE2BAA8B83003D53B1 /* Assets.xcassets */; };
 		0F01F0B22BAA8B83003D53B1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0F01F0B12BAA8B83003D53B1 /* Preview Assets.xcassets */; };
+		0F01F0B92BAA8D30003D53B1 /* MapMeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F01F0B82BAA8D30003D53B1 /* MapMeView.swift */; };
+		0F01F0BB2BAA8D75003D53B1 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F01F0BA2BAA8D75003D53B1 /* LocationManager.swift */; };
+		0FF5EA042BAB8486003822CD /* SwiftfulRouting in Frameworks */ = {isa = PBXBuildFile; productRef = 0FF5EA032BAB8486003822CD /* SwiftfulRouting */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +22,9 @@
 		0F01F0AC2BAA8B82003D53B1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		0F01F0AE2BAA8B83003D53B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0F01F0B12BAA8B83003D53B1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		0F01F0B82BAA8D30003D53B1 /* MapMeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapMeView.swift; sourceTree = "<group>"; };
+		0F01F0BA2BAA8D75003D53B1 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		0F01F0BC2BAA8F10003D53B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FF5EA042BAB8486003822CD /* SwiftfulRouting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,10 +58,13 @@
 		0F01F0A92BAA8B82003D53B1 /* MapMe */ = {
 			isa = PBXGroup;
 			children = (
+				0F01F0BC2BAA8F10003D53B1 /* Info.plist */,
 				0F01F0AA2BAA8B82003D53B1 /* MapMeApp.swift */,
 				0F01F0AC2BAA8B82003D53B1 /* ContentView.swift */,
+				0F01F0B82BAA8D30003D53B1 /* MapMeView.swift */,
 				0F01F0AE2BAA8B83003D53B1 /* Assets.xcassets */,
 				0F01F0B02BAA8B83003D53B1 /* Preview Content */,
+				0F01F0BA2BAA8D75003D53B1 /* LocationManager.swift */,
 			);
 			path = MapMe;
 			sourceTree = "<group>";
@@ -83,6 +93,9 @@
 			dependencies = (
 			);
 			name = MapMe;
+			packageProductDependencies = (
+				0FF5EA032BAB8486003822CD /* SwiftfulRouting */,
+			);
 			productName = MapMe;
 			productReference = 0F01F0A72BAA8B82003D53B1 /* MapMe.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +124,9 @@
 				Base,
 			);
 			mainGroup = 0F01F09E2BAA8B82003D53B1;
+			packageReferences = (
+				0FF5EA022BAB8486003822CD /* XCRemoteSwiftPackageReference "SwiftfulRouting" */,
+			);
 			productRefGroup = 0F01F0A82BAA8B82003D53B1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -137,8 +153,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F01F0BB2BAA8D75003D53B1 /* LocationManager.swift in Sources */,
 				0F01F0AD2BAA8B82003D53B1 /* ContentView.swift in Sources */,
 				0F01F0AB2BAA8B82003D53B1 /* MapMeApp.swift in Sources */,
+				0F01F0B92BAA8D30003D53B1 /* MapMeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,8 +290,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MapMe/Preview Content\"";
+				DEVELOPMENT_TEAM = S5C52P9PGP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MapMe/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "allow us to map you!";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "allow us to locate you!";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "allow us to map you!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -300,8 +323,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MapMe/Preview Content\"";
+				DEVELOPMENT_TEAM = S5C52P9PGP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MapMe/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "allow us to map you!";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "allow us to locate you!";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "allow us to map you!";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -342,6 +370,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0FF5EA022BAB8486003822CD /* XCRemoteSwiftPackageReference "SwiftfulRouting" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftfulThinking/SwiftfulRouting";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.3.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0FF5EA032BAB8486003822CD /* SwiftfulRouting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0FF5EA022BAB8486003822CD /* XCRemoteSwiftPackageReference "SwiftfulRouting" */;
+			productName = SwiftfulRouting;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0F01F09F2BAA8B82003D53B1 /* Project object */;
 }

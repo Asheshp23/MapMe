@@ -1,21 +1,11 @@
-//
-//  ContentView.swift
-//  MapMe
-//
-//  Created by Ashesh Patel on 2024-03-19.
-//
-
 import SwiftUI
+import SwiftfulRouting
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+      RouterView { router in
+        MapMeView()
+      }
     }
 }
 

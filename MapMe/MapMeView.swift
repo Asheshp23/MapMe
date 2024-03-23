@@ -1,18 +1,23 @@
-//
-//  MapMeView.swift
-//  MapMe
-//
-//  Created by Ashesh Patel on 2024-03-19.
-//
-
 import SwiftUI
+import MapKit
 
 struct MapMeView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  @State var locationManager = LocationManager()
+
+  var body: some View {
+    Map() {
+      Annotation("", coordinate: locationManager.userLocation) {
+        Image(systemName: "location.north.circle")
+          .resizable()
+          .rotationEffect(.degrees(locationManager.userHeading))
+          .foregroundStyle(.blue)
+          .frame(maxWidth: 50, maxHeight: 50)
+      }
     }
+    .mapStyle(.imagery)
+  }
 }
 
 #Preview {
-    MapMeView()
+  MapMeView()
 }
