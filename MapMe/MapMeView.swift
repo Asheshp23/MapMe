@@ -11,8 +11,16 @@ struct MapMeView: View {
           .resizable()
           .rotationEffect(.degrees(locationManager.userHeading))
           .foregroundStyle(.blue)
-          .frame(maxWidth: 50, maxHeight: 50)
+          .frame(maxWidth: 80, maxHeight: 80)
+          .background(
+            Circle()
+              .fill(.white)
+          )
       }
+      
+      MapPolyline(coordinates: locationManager.userLocations)
+        .stroke(.teal, lineWidth: 2.0)
+        
     }
     .mapStyle(.imagery)
   }

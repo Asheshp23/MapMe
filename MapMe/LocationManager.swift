@@ -9,6 +9,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
   var userHeading: CLLocationDirection = 0.0
   var userLocation: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0)
   
+  var userLocations: [CLLocationCoordinate2D] = []
+  
   override init() {
     locationManager.desiredAccuracy = kCLLocationAccuracyBest
     locationManager.requestAlwaysAuthorization()
@@ -45,6 +47,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     if let location = locations.last {
       self.userLocation = location.coordinate
+      self.userLocations.append(location.coordinate)
     }
   }
   
