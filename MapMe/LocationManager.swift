@@ -42,7 +42,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
       manager.startUpdatingLocation()
       manager.stopUpdatingHeading()
     } else {
-      manager.requestWhenInUseAuthorization()
+      manager.requestAlwaysAuthorization()
     }
   }
   
@@ -63,7 +63,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
   func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
     switch manager.authorizationStatus {
     case .authorizedAlways, .authorizedWhenInUse:
-      manager.requestLocation()
+      startLocationServices()
     case .notDetermined:
       manager.requestWhenInUseAuthorization()
     case .denied:
