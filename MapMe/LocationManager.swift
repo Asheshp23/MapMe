@@ -7,7 +7,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
   var userHeading: CLLocationDirection = 0.0
   var userLocation: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0)
   var userLocations: [CLLocationCoordinate2D] = []
-  var isAuthorized = false
   
   override init() {
     super.init()
@@ -42,9 +41,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
       manager.headingOrientation = headingOrientation()
       manager.startUpdatingLocation()
       manager.stopUpdatingHeading()
-      isAuthorized = true
     } else {
-      isAuthorized = false
       manager.requestWhenInUseAuthorization()
     }
   }
@@ -66,16 +63,12 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
   func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
     switch manager.authorizationStatus {
     case .authorizedAlways, .authorizedWhenInUse:
-      isAuthorized = true
       manager.requestLocation()
     case .notDetermined:
-      isAuthorized = false
       manager.requestWhenInUseAuthorization()
     case .denied:
-      isAuthorized = false
       print("access denied")
     default:
-      isAuthorized = true
       startLocationServices()
     }
   }
