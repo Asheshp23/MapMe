@@ -14,10 +14,14 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     startLocationServices()
   }
   
+  deinit {
+    manager.stopUpdatingLocation()
+    manager.stopUpdatingHeading()
+  }
+  
   func headingOrientation() -> CLDeviceOrientation {
     let deviceOrientation = UIDevice.current.orientation
-    let clDeviceOrientation: CLDeviceOrientation
-    
+   
     switch deviceOrientation {
     case .portrait:
       return .portrait
@@ -36,11 +40,13 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
   
   func startLocationServices() {
     if manager.authorizationStatus == .authorizedAlways || manager.authorizationStatus == .authorizedWhenInUse {
-      manager.desiredAccuracy = kCLLocationAccuracyBest
-      manager.allowsBackgroundLocationUpdates = true
-      manager.headingOrientation = headingOrientation()
-      manager.startUpdatingLocation()
-      manager.stopUpdatingHeading()
+      Task {
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.allowsBackgroundLocationUpdates = true
+        manager.headingOrientation = headingOrientation()
+        manager.startUpdatingLocation()
+        manager.startUpdatingHeading()
+      }
     } else {
       manager.requestAlwaysAuthorization()
     }
@@ -48,8 +54,10 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
   
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     if let location = locations.last {
-      self.userLocation = location.coordinate
-      self.userLocations.append(location.coordinate)
+      Task { @MainActor in
+        self.userLocation = location.coordinate
+        self.userLocations.append(location.coordinate)
+      }
     }
   }
   
@@ -57,7 +65,9 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     if newHeading.headingAccuracy < 0 { return }
     
     let heading = newHeading.trueHeading > 0 ? newHeading.trueHeading : newHeading.magneticHeading
-    userHeading = heading
+    Task { @MainActor in
+      userHeading = heading
+    }
   }
   
   func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
