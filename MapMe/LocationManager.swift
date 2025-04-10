@@ -2,7 +2,7 @@ import SwiftUI
 import CoreLocation
 
 @Observable
-class LocationManager: NSObject, CLLocationManagerDelegate {
+final class LocationManager: NSObject, CLLocationManagerDelegate {
   @ObservationIgnored let manager = CLLocationManager()
   var userHeading: CLLocationDirection = 0.0
   var userLocation: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0)
@@ -20,70 +20,63 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
   }
   
   func headingOrientation() -> CLDeviceOrientation {
-    let deviceOrientation = UIDevice.current.orientation
-   
+    var deviceOrientation: UIDeviceOrientation = .portrait
+    
+    Task { @MainActor in
+      deviceOrientation = UIDevice.current.orientation
+    }
+    
     switch deviceOrientation {
     case .portrait:
       return .portrait
     case .portraitUpsideDown:
       return .portraitUpsideDown
     case .landscapeLeft:
-      return .landscapeRight // Note the flipped mapping
+      return .landscapeRight
     case .landscapeRight:
-      return .landscapeLeft // Note the flipped mapping
-    case .faceUp, .faceDown, .unknown:
-      fallthrough
+      return .landscapeLeft
     default:
-      return .unknown
+      return .portrait
     }
   }
   
   func startLocationServices() {
-    if manager.authorizationStatus == .authorizedAlways || manager.authorizationStatus == .authorizedWhenInUse {
-      Task {
-        manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.allowsBackgroundLocationUpdates = true
-        manager.headingOrientation = headingOrientation()
-        manager.startUpdatingLocation()
-        manager.startUpdatingHeading()
-      }
-    } else {
-      manager.requestAlwaysAuthorization()
+    switch manager.authorizationStatus {
+    case .authorizedAlways, .authorizedWhenInUse:
+      manager.desiredAccuracy = kCLLocationAccuracyBest
+      manager.allowsBackgroundLocationUpdates = true
+      manager.headingOrientation = headingOrientation()
+      manager.startUpdatingLocation()
+      manager.startUpdatingHeading()
+    case .notDetermined:
+      manager.requestWhenInUseAuthorization()
+    case .denied:
+      print("Location access denied")
+    case .restricted:
+      print("Location access restricted")
+    @unknown default:
+      print("Unknown authorization status")
     }
   }
   
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    if let location = locations.last {
-      Task { @MainActor in
-        self.userLocation = location.coordinate
-        self.userLocations.append(location.coordinate)
-      }
-    }
+    guard let location = locations.last else { return }
+    userLocation = location.coordinate
+    userLocations.append(location.coordinate)
   }
   
   func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-    if newHeading.headingAccuracy < 0 { return }
+    guard newHeading.headingAccuracy >= 0 else { return }
     
     let heading = newHeading.trueHeading > 0 ? newHeading.trueHeading : newHeading.magneticHeading
-    Task { @MainActor in
-      userHeading = heading
-    }
+    userHeading = heading
   }
   
   func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-    switch manager.authorizationStatus {
-    case .authorizedAlways, .authorizedWhenInUse:
-      startLocationServices()
-    case .notDetermined:
-      manager.requestWhenInUseAuthorization()
-    case .denied:
-      print("access denied")
-    default:
-      startLocationServices()
-    }
+    startLocationServices()
   }
   
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-    print(error.localizedDescription)
+    print("Location manager error: \(error.localizedDescription)")
   }
 }
